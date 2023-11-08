@@ -30,7 +30,7 @@ Bot \ Helper - это скрипт, разработанный для испол
 
 ## Создатель
 
-[@linqse](https://github.com/Linqse)https://github.com/Linqse
+[@linqse](https://github.com/Linqse)
 
 ---
 
