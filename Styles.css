@@ -1,0 +1,137 @@
+﻿:root {
+    --window-title-bar-height: 2.5rem;
+    --window-menu-width: 200px;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #121212;
+    user-select: none;
+}
+
+.window {
+    height: 100%;
+    color: #ffffff;
+    background-color: #202020;
+    border: none;
+}
+
+.title-bar {
+    background-color: #333333;
+    height: var(--window-title-bar-height);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    justify-content: space-between;
+}
+
+.content-area {
+    display: flex;
+    height: calc(100% - var(--window-title-bar-height));
+}
+
+.menu {
+    /*width: var(--window-menu-width);
+    */
+    width: 100px;
+    background-color: #2a2a2a;
+    overflow-y: auto;
+}
+
+.menu-item {
+    padding: 0.5rem 1rem;
+    display: block;
+    text-decoration: none;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background-color: #3a3a3a;
+}
+
+.tab-content {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.window-close {
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.window-close:hover {
+    color: #dc3545;
+}
+
+.title-bar img {
+    height: 1.5rem; /* Установите высоту иконки */
+    margin-right: 0.5rem;
+}
+
+.window-lock {
+    font-size: 1.25rem;
+    cursor: pointer;
+    margin-right: 10px; 
+}
+
+.window-lock:hover {
+    color: #9c9c9c; /* Цвет при наведении */
+}
+
+.title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    
+}
+
+
+.window-lock:hover {
+    color: #dc3545;
+}
+
+.eyebody {
+    margin-left: 5px;
+    margin-right: 15px;
+    margin-top: 10px;
+}
+
+
+footer {
+    position: fixed; /* Фиксированное положение, чтобы оставаться поверх всех элементов */
+    bottom: 0; /* Прижимаем к нижней части экрана */
+    left: 0; /* Растягиваем на всю ширину экрана */
+    width: 100%;
+    height: 30px; /* Задаем высоту 30px */
+    background-color: #333333; /* Темный фон, согласно стилю Windows 11 */
+    color: #ffffff; /* Белый текст */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Центрирование содержимого */
+    z-index: 1000; /* Высокий z-index для поверхности над всеми элементами */
+}
+
+/* Стиль текста внутри footer'а */
+footer p {
+    margin: 0; /* Убираем отступы для абзаца */
+    
+}
+
+.button-with-icon {
+    display: flex;
+    align-items: center;
+}
+
+.button-with-icon span {
+    font-size: 24px; /* Увеличение размера эмодзи */
+    margin-right: 8px; /* Отступ справа от эмодзи */
+}
+.button-with-icon button {
+    flex-grow: 1; /* Заставляет кнопку заполнить все доступное горизонтальное пространство */
+}
+
+
