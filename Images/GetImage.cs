@@ -15,7 +15,7 @@ public static class GetImage
     public static async Task<(bool? IsActive, ImmutableArray<YoloPrediction> Predictions)> RefreshAndGetML(IMLSearchTrigger aura)
     {
         var result = await aura.FetchNextResult();
-        return (result.Success, aura.Predictions);
+        return (result.Success, result.Predictions);
     }
     
     public static Point GetImgCenter(Rectangle? rectangle)
