@@ -1,4 +1,4 @@
-# Bot \ Helper для Majestic RP GTA5
+# EyeAuras Bot \ Helper для GTA5 RP Majestic
 ![Screenshot_2](https://github.com/Linqse/EyeaurasGTA5Majestic/assets/93038385/231f3167-1ee5-4976-bf6f-332aa7015e24)
 ## Описание
 
