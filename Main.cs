@@ -155,8 +155,6 @@ public partial class Main : WebUIComponent {
             await SendKey("E");
             Log.Info("Start Fishing");
         }
-
-        AuraTree.Aura["Bems"] = "huyak";
     }
 
     private async Task PressRange()
