@@ -149,7 +149,10 @@ public partial class Main : WebUIComponent {
         {
             try
             {
-                CaptchaPress(result.Predictions);
+                if (Capcha)
+                {
+                    CaptchaPress(result.Predictions);
+                }
             }
             catch
             {
