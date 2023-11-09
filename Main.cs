@@ -1,9 +1,13 @@
+using System.Collections.Immutable;
+using System.IO;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
+using EyeAuras.OpenCVAuras.ML.Yolo;
 using EyeAuras.Roxy.Services;
 using EyeAuras.Roxy.Shared;
 using EyeAuras.Roxy.Shared.Actions.SendInput;
 using EyeAuras.Web.Repl.Component.Image;
+using PoeShared.Modularity;
 using PoeShared.Native;
 using PoeShared.UI;
 
@@ -18,6 +22,7 @@ public partial class Main : WebUIComponent {
     [Dependency] public ISendInputController SendInputController { get; init; }
     
     [Dependency] public IHotkeyConverter HotkeyConverter { get; init; }
+    [Dependency] public IAppArguments appArguments { get; init; }
 
 
     private IWinExistsTrigger WinExistsTrigger =>
@@ -46,6 +51,9 @@ public partial class Main : WebUIComponent {
 
     private IMLSearchTrigger FishMl =>
         AuraTree.FindAuraByPath(@".\ML\Fish").Triggers.Items.OfType<IMLSearchTrigger>().First();
+
+    private IMLSearchTrigger CapchaML =>
+        AuraTree.FindAuraByPath(@".\ML\Capcha").Triggers.Items.OfType<IMLSearchTrigger>().First();
 
     private IImageSearchTrigger TriggerRange => AuraTree.FindAuraByPath(@".\Images\Range").Triggers.Items
         .OfType<IImageSearchTrigger>().First();
@@ -88,7 +96,41 @@ public partial class Main : WebUIComponent {
     }
 
 
-    
+    private async Task CheckDownloadML()
+    {
+        var path = Path.Combine(appArguments.AppDataDirectory, "EyeSquad");
+        var checker = new AI.Check();
+        try
+        {
+            var result = await checker.CheckOrDownloadAsync(path);
+
+            if (result.success)
+            {
+                var newCaptchaFileInfo = new FileInfo(result.capcha);
+                if (CapchaML.MLModelPath?.FullName != newCaptchaFileInfo.FullName)
+                {
+                    CapchaML.MLModelPath = newCaptchaFileInfo;
+                }
+
+                var newFishFileInfo = new FileInfo(result.fish);
+                if (FishMl.MLModelPath?.FullName != newFishFileInfo.FullName)
+                {
+                    FishMl.MLModelPath = newFishFileInfo;
+                }
+
+                var newGatherFileInfo = new FileInfo(result.orangestones);
+                if (Gather.MLModelPath?.FullName != newGatherFileInfo.FullName)
+                {
+                    Gather.MLModelPath = newGatherFileInfo;
+                } 
+            }
+        }
+        catch
+        {
+            Log.Info("Download \\ set path GTA5ML error"); 
+        } 
+    }
+
 
     protected override async Task HandleAfterFirstRender()
     {
@@ -103,8 +145,32 @@ public partial class Main : WebUIComponent {
             .Subscribe(async _ => await SendKey("`"))
             .AddTo(Anchors);
         
+        CapchaML.ResultStream.Subscribe(result => 
+        {
+            try
+            {
+                CaptchaPress(result.Predictions);
+            }
+            catch
+            {
+                Log.Info("Problem with ML");
+                
+            }
+        }).AddTo(Anchors);
+        
+        
+        CheckDownloadML(); 
+        
     }
 
+    private async Task CaptchaPress(ImmutableArray<YoloPrediction> predictions)
+    {
+        var key = predictions.FirstOrDefault().Label.Name;
+        if(key != null) SendKey($"{key}");
+
+    }
+    
+    
     private async Task Gathering()
     {
         
