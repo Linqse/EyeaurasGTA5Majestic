@@ -197,6 +197,12 @@ public partial class Main : WebUIComponent {
             await Task.Delay(200);
             await PickUpTree();
         }
+
+        if (Capcha)
+        {
+            await SendKey("E");
+            await Task.Delay(200);
+        }
     }
     
     

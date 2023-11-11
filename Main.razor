@@ -159,10 +159,16 @@
 
   private void ToggleCapcha()
   {
+    var condition = AuraTree.FindAuraByPath(@".\ML\Capcha").EnablingConditions.Items.OfType<IDefaultTrigger>().FirstOrDefault();
     Capcha = !Capcha;
     if (Capcha)
     {
       Close();
+      if (condition != null) condition.TriggerValue = true;
+    }
+    else
+    {
+      if (condition != null) condition.TriggerValue = false;
     }
   }
   
