@@ -2,6 +2,8 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using EyeAuras.OpenCVAuras.ML.Yolo;
 using EyeAuras.Roxy.Services;
 using EyeAuras.Roxy.Shared;
@@ -96,7 +98,7 @@ public partial class Main : WebUIComponent {
     }
 
 
-    private async Task CheckDownloadML()
+    /*private async Task CheckDownloadML()
     {
         var path = Path.Combine(appArguments.AppDataDirectory, "EyeSquad");
         var checker = new AI.Check();
@@ -129,7 +131,7 @@ public partial class Main : WebUIComponent {
         {
             Log.Info("Download \\ set path GTA5ML error"); 
         } 
-    }
+    }*/
 
 
     protected override async Task HandleAfterFirstRender()
@@ -160,12 +162,29 @@ public partial class Main : WebUIComponent {
                 
             }
         }).AddTo(Anchors);
-        
-        
-        CheckDownloadML(); 
-        
+
+        Gather.ImageSink.Subscribe(x => Task.Run(() => SaveScreen(x))).AddTo(Anchors);
+
+        //CheckDownloadML(); 
+
     }
 
+
+    private async Task SaveScreen(Image<Bgr, byte> img)
+    {
+        try
+        {
+            string fileName = Path.GetRandomFileName() + ".png";
+            string path = Path.Combine(@"E:\GatherScreens", fileName);
+            Directory.CreateDirectory(@"E:\GatherScreens");
+            img.Save(path);
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Ошибка при сохранении изображения: " + ex.Message);
+        }
+    }
+    
     private async Task CaptchaPress(ImmutableArray<YoloPrediction> predictions)
     {
         var key = predictions.FirstOrDefault().Label.Name;
